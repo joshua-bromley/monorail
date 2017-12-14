@@ -48,6 +48,29 @@ void setTexture::MenuOption(Texture& texture){
     option.setTexture(texture);
 }
 
+Vector2f getPosition::MenuOption(){
+    return position;
+}
+
+Vector2f getSize::MenuOption(){
+    return dimension;
+}
+
+Vector2f getTexturePosition::MenuOption(){
+    return texturePosition;
+}
+
+Vector2f getTextureSize:;MenuOption(){
+    return textureSize;
+}
+
+int getToggles::MenuOption(){
+    return toggles;
+}
+
+Sprite getSprite::MenuOption(){
+    return option;
+}
 
 
 class Button::MenuOption{
