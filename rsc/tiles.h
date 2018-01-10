@@ -12,10 +12,11 @@ public:
     //left = 0, right = 1, up = 2, down = 3
     Sprite sprite;
 
-    Tiles(Texture & texture,int,int);
+    Tiles(Texture & texture,int,int,bool);
     void ends();
 };
-Tiles::Tiles(Texture & texture,int s,int r){
+Tiles::Tiles(Texture & texture,int s,int r,bool p){
+    placed = p;
     side = s;
     rotation = r;
     Sprite.setTexture(Texture);
