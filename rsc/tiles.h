@@ -24,9 +24,9 @@ Tiles::Tiles(Texture & texture,int s,int r,bool p){
 }
 void Tiles::ends(){
     if(side == 0){
-        if(rotation >= 1){
+        if(rotation <= 1){
             end1 = 0;
-            end2 = 0;
+            end2 = 1;
         }
         else{
             end1 = 2;
@@ -34,17 +34,17 @@ void Tiles::ends(){
         }
     }
     else{
-        if(rotation >=1){
+        if(rotation <=1){
             end1 = 3;
         }
         else{
             end1 = 2;
         }
         if(rotation % 2 == 0){
-            end2 = 0;
+            end2 = 1;
         }
         else{
-            end2 = 1;
+            end2 = 0;
         }
     }
 }
