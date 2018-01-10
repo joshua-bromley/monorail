@@ -14,7 +14,7 @@ bool pathfinder(vector< vector<Tiles> > tiles, int x, int y, int last){
       if(tiles[x][y].isStation()){//.isStation is a placeholder
             return true;
       }
-      else if(tiles[x][y].isBlank()){//.isBlank is a placeholder
+      else if(tiles[x][y].placed == false){
         return false;
       }
       else if(tiles[x][y].end1 == last){
