@@ -41,7 +41,7 @@ void Tiles::ends(){
             end1 = 2;
         }
         if(rotation % 2 == 0){
-            end2 = 0
+            end2 = 0;
         }
         else{
             end2 = 1;
