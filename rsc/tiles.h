@@ -13,7 +13,10 @@ public:
     Sprite sprite;
 
     Tiles(Texture & texture,int,int,bool);
-    void ends();
+    int getEnd1();
+    int getEnd2();
+    void setPlaced(bool);
+    bool getPlaced();
 };
 Tiles::Tiles(Texture & texture,int s,int r,bool p){
     placed = p;
@@ -21,8 +24,6 @@ Tiles::Tiles(Texture & texture,int s,int r,bool p){
     rotation = r;
     Sprite.setTexture(Texture);
     Sprite.setTextureRect(IntRect(rotation*20,side*20,20,20));
-}
-void Tiles::ends(){
     if(side == 0){
         if(rotation >= 1){
             end1 = 0;
@@ -48,4 +49,20 @@ void Tiles::ends(){
         }
     }
 }
+int Tiles::getEnd1(){
+    return end1;
+}
+
+int Tiles::getEnd2(){
+    return end2;
+}
+
+bool Tiles::getPlaced(){
+    return placed;
+}
+
+void Tiles::setPlaced(bool input){
+    placed = input;
+}
+
  #endif
