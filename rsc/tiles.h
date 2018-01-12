@@ -14,13 +14,14 @@ public:
 
     Tiles(Texture & texture,int,int,bool);
     void ends();
+    void retexture(int,int,Texture& texture);
 };
 Tiles::Tiles(Texture & texture,int s,int r,bool p){
     placed = p;
     side = s;
     rotation = r;
     Sprite.setTexture(Texture);
-    Sprite.setTextureRect(IntRect(rotation*20,side*20,20,20));
+    Sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
 }
 void Tiles::ends(){
     if(side == 0){
@@ -47,5 +48,9 @@ void Tiles::ends(){
             end2 = 0;
         }
     }
+}
+void Tiles::retexture(int s,int r,Texture & texture){
+    Sprite.setTexture(Texture);
+    Sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
 }
  #endif
