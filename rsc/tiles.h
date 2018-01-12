@@ -13,28 +13,22 @@ public:
     Sprite sprite;
 
     Tiles(Texture & texture,int,int,bool);
-<<<<<<< HEAD
     void ends();
     void retexture(int,int,Texture& texture);
-=======
     int getEnd1();
     int getEnd2();
     void setPlaced(bool);
     bool getPlaced();
->>>>>>> 930d16495a72f1a414cb806f531b73f744218f91
 };
 Tiles::Tiles(Texture & texture,int s,int r,bool p){
     placed = p;
     side = s;
     rotation = r;
     Sprite.setTexture(Texture);
-<<<<<<< HEAD
     Sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
 }
 void Tiles::ends(){
-=======
-    Sprite.setTextureRect(IntRect(rotation*20,side*20,20,20));
->>>>>>> 930d16495a72f1a414cb806f531b73f744218f91
+    Sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
     if(side == 0){
         if(rotation <= 1){
             end1 = 0;
@@ -60,12 +54,10 @@ void Tiles::ends(){
         }
     }
 }
-<<<<<<< HEAD
 void Tiles::retexture(int s,int r,Texture & texture){
     Sprite.setTexture(Texture);
     Sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
 }
-=======
 int Tiles::getEnd1(){
     return end1;
 }
@@ -82,5 +74,4 @@ void Tiles::setPlaced(bool input){
     placed = input;
 }
 
->>>>>>> 930d16495a72f1a414cb806f531b73f744218f91
  #endif
