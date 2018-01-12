@@ -24,11 +24,11 @@ Tiles::Tiles(Texture & texture,int s,int r,bool p){
     placed = p;
     side = s;
     rotation = r;
-    Sprite.setTexture(Texture);
-    Sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
+    sprite.setTexture(Texture);
+    sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
 }
 void Tiles::ends(){
-    Sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
+    sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
     if(side == 0){
         if(rotation <= 1){
             end1 = 0;
@@ -55,8 +55,8 @@ void Tiles::ends(){
     }
 }
 void Tiles::retexture(int s,int r,Texture & texture){
-    Sprite.setTexture(Texture);
-    Sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
+    sprite.setTexture(Texture);
+    sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
 }
 int Tiles::getEnd1(){
     return end1;
