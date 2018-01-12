@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "tiles.h"
 
 using namespace std;
 
@@ -11,15 +12,14 @@ int main(){
 }
 
 bool pathfinder(vector< vector<Tiles> > tiles, int x, int y, int last){
-      tiles[x][y].ends();
       if(tiles[x][y].isStation()){//.isStation is a placeholder
             return true;
       }
       else if(tiles[x][y].placed == false){
         return false;
       }
-      else if(tiles[x][y].end1 == last){
-        switch(tiles[x][y].end2){
+      else if(tiles[x][y].getEnd1 == last){
+        switch(tiles[x][y].getEnd2){
         case 0:
             return pathfinder(tiles, x-1 ,y , 1);
             break;
@@ -35,7 +35,7 @@ bool pathfinder(vector< vector<Tiles> > tiles, int x, int y, int last){
         }
       }
       else{
-        switch(tiles[x][y].end1){
+        switch(tiles[x][y].getEnd1){
         case 0:
             return pathfinder(tiles, x-1 ,y , 1);
             break;
