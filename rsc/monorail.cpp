@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <SFML/Graphics.hpp>
 #include "tiles.h"
 
 using namespace std;
@@ -7,14 +8,28 @@ using namespace std;
 bool pathfinder(vector< vector<Tiles> >, int, int, int);
 
 int main(){
+    RenderWindow window(VideoMode(1000,1000), "Monorail");
+    window.setFramerateLimit(60);
+    bool turn = true;
+    bool playAgain = true;
+    while(playAgain && window.isOpen()){
+        Event event;
+        while(window.pollEvent(event)){
+            if(event.type == Event::Closed){
+                window.close();
+            }
+        }
+
+
+    }
     return 0;
 }
 
-bool pathfinder(vector< vector<Tiles> > tiles, int x, int y, int last){
+bool pathfinder(vector< vector<Tiles> > &tiles, int x, int y, int last){
       if(tiles[x][y].isStation()){//.isStation is a placeholder
             return true;
       }
-      else if(tiles[x][y].placed == false){
+      else if(tiles[x][y].getPlaced == false){
         return false;
       }
       else if(tiles[x][y].getEnd1 == last){
