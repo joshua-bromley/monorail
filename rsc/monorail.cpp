@@ -4,9 +4,9 @@
 #include "tiles.h"
 
 using namespace std;
-
-bool pathfinder(vector< vector<Tiles> >, int, int, int);
-bool placement(vector< vector<Tiles> >&,Vector2f,Texture &,int);
+using namespace sf;
+bool pathfinder(vector< vector<Tiles> >& tiles, int, int, int);
+bool placement(vector< vector<Tiles> >& tiles,Vector2f,Texture &,int);
 
 int main(){
     RenderWindow window(VideoMode(1000,1000), "Monorail");
@@ -20,10 +20,12 @@ int main(){
         vector<Tiles> row;
         for(int j = 0; j < 14; j++){
             if(i == 6 && (j == 6 || j == 7)){
-                row.push_back(Tiles tiles(texture, 0, 1, true);
+                Tiles tiles(texture, 0, 1, true);
+                row.push_back(tiles);
             }
             else{
-                row.push_back(Tiles tiles(texture, 0, 3, false));
+                Tiles tiles(texture, 0, 3, false);
+                row.push_back(tiles);
             }
         }
 
@@ -41,15 +43,12 @@ int main(){
     return 0;
 }
 
-bool pathfinder(vector< vector<Tiles> > &tiles, int x, int y, int last){
-      if(tiles[x][y].isStation()){//.isStation is a placeholder
-            return true;
-      }
-      else if(tiles[x][y].getPlaced == false){
+bool pathfinder(vector< vector<Tiles> >& tiles, int x, int y, int last){
+    if(tiles[x][y].placed == false){
         return false;
-      }
-      else if(tiles[x][y].getEnd1 == last){
-        switch(tiles[x][y].getEnd2){
+    }
+      else if(tiles[x][y].end1 == last){
+        switch(tiles[x][y].end2){
         case 0:
             return pathfinder(tiles, x-1 ,y , 1);
             break;
@@ -65,7 +64,7 @@ bool pathfinder(vector< vector<Tiles> > &tiles, int x, int y, int last){
         }
       }
       else{
-        switch(tiles[x][y].getEnd1){
+        switch(tiles[x][y].end1){
         case 0:
             return pathfinder(tiles, x-1 ,y , 1);
             break;
@@ -89,7 +88,7 @@ bool placement(vector< vector<Tiles> >& tiles,Vector2f click,Texture & texture,i
     bool breakcheck = false;
     for(int x = 0;x < tiles.size();x++){
         for(int y = 0; y <tiles[0].size();x++){
-            if(Vector2f.x >= tiles[x][y].sprite.getPosition().x && Vector2f.x <= tiles[x][y].sprite.getPosition().x + 64 && Vector2f.y >= tiles[x][y].sprite.getPosition().y && Vector2f.y <= tiles[x][y].sprite.getPosition().y + 64){
+            if(click.x >= tiles[x][y].sprite.getPosition().x && click.x <= tiles[x][y].sprite.getPosition().x + 64 && click.y >= tiles[x][y].sprite.getPosition().y && click.y <= tiles[x][y].sprite.getPosition().y + 64){
                 tilex = x;
                 tiley = y;
                 breakcheck = true;
@@ -102,158 +101,131 @@ bool placement(vector< vector<Tiles> >& tiles,Vector2f click,Texture & texture,i
                 break;
         }
     }
-    if(tiles.[tilex][tiley].placed == true){
+    if(tiles[tilex][tiley].placed == true){
         return false;
         // cannot place
     }
     int connectcount = 0;
     //tile to the right of
-    if(tiles.[tilex + 1][tiley] == placed){
-            connectcount++;
-        if(tiles.[tilex + 1][tiley].end1 == tiles.[tilex][tiley] == end1){
-            break;
+    if(tiles[tilex + 1][tiley].placed == true){
+        connectcount++;
+        if(tiles[tilex + 1][tiley].end1 == tiles[tilex][tiley].end1){
+
         }
-        else if(tiles.[tilex + 1][tiley].end1 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex + 1][tiley].end1 == tiles[tilex][tiley].end2){
         }
-        else if(tiles.[tilex + 1][tiley].end2 == tiles.[tilex][tiley] == end1){
-            break;
+        else if(tiles[tilex + 1][tiley].end2 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex + 1][tiley].end2 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex + 1][tiley].end2 == tiles[tilex][tiley].end2){
         }
         else{
             return false;
         }
     }
     //tile to the left of
-    if(tiles.[tilex - 1][tiley] == placed){
+    if(tiles[tilex - 1][tiley].placed == true){
         connectcount++;
-        if(tiles.[tilex - 1][tiley].end1 == tiles.[tilex][tiley] == end1){
-            break;
+        if(tiles[tilex - 1][tiley].end1 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex - 1][tiley].end1 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex - 1][tiley].end1 == tiles[tilex][tiley].end2){
         }
-        else if(tiles.[tilex - 1][tiley].end2 == tiles.[tilex][tiley] == end1){
-            break;
+        else if(tiles[tilex - 1][tiley].end2 == tiles[tilex][tiley].end1){
+
         }
-        else if(tiles.[tilex - 1][tiley].end2 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex - 1][tiley].end2 == tiles[tilex][tiley].end2){
         }
         else{
             return false;
         }
     }
     //tile to the right and above
-    if(tiles.[tilex + 1][tiley + 1] == placed){
+    if(tiles[tilex + 1][tiley + 1].placed == true){
         connectcount++;
-        if(tiles.[tilex + 1][tiley + 1].end1 == tiles.[tilex][tiley] == end1){
-            break;
+        if(tiles[tilex + 1][tiley + 1].end1 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex + 1][tiley + 1].end1 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex + 1][tiley + 1].end1 == tiles[tilex][tiley].end2){
         }
-        else if(tiles.[tilex + 1][tiley + 1].end2 == tiles.[tilex][tiley] == end1){
-            break;
+        else if(tiles[tilex + 1][tiley + 1].end2 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex + 1][tiley + 1].end2 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex + 1][tiley + 1].end2 == tiles[tilex][tiley].end2){
         }
         else{
             return false;
         }
     }
     //tile to the right and below
-    if(tiles.[tilex + 1][tiley - 1] == placed){
+    if(tiles[tilex + 1][tiley - 1].placed == true){
         connectcount++;
-        if(tiles.[tilex + 1][tiley - 1].end1 == tiles.[tilex][tiley] == end1){
-            break;
+        if(tiles[tilex + 1][tiley - 1].end1 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex + 1][tiley - 1].end1 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex + 1][tiley - 1].end1 == tiles[tilex][tiley].end2){
         }
-        else if(tiles.[tilex + 1][tiley - 1].end2 == tiles.[tilex][tiley] == end1){
-            break;
+        else if(tiles[tilex + 1][tiley - 1].end2 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex + 1][tiley - 1].end2 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex + 1][tiley - 1].end2 == tiles[tilex][tiley].end2){
         }
         else{
             return false;
         }
     }
     //tile to the left and below
-    if(tiles.[tilex - 1][tiley -1] == placed){
+    if(tiles[tilex - 1][tiley -1].placed == true){
         connectcount++;
-        if(tiles.[tilex - 1][tiley -1].end1 == tiles.[tilex][tiley] == end1){
-            break;
+        if(tiles[tilex - 1][tiley -1].end1 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex - 1 ][tiley -1].end1 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex - 1 ][tiley -1].end1 == tiles[tilex][tiley].end2){
         }
-        else if(tiles.[tilex - 1 ][tiley -1].end2 == tiles.[tilex][tiley] == end1){
-            break;
+        else if(tiles[tilex - 1 ][tiley -1].end2 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex - 1 ][tiley -1].end2 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex - 1 ][tiley -1].end2 == tiles[tilex][tiley].end2){
         }
         else{
             return false;
         }
     }
     //tile to the left and above
-    if(tiles.[tilex -1][tiley + 1] == placed){
+    if(tiles[tilex -1][tiley + 1].placed == true){
         connectcount++;
-        if(tiles.[tilex -1 ][tiley + 1].end1 == tiles.[tilex][tiley] == end1){
-            break;
+        if(tiles[tilex -1 ][tiley + 1].end1 == tiles[tilex][tiley].end1){
+
         }
-        else if(tiles.[tilex - 1][tiley + 1].end1 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex - 1][tiley + 1].end1 == tiles[tilex][tiley].end2){
         }
-        else if(tiles.[tilex - 1][tiley + 1].end2 == tiles.[tilex][tiley] == end1){
-            break;
+        else if(tiles[tilex - 1][tiley + 1].end2 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex - 1][tiley + 1].end2 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex - 1][tiley + 1].end2 == tiles[tilex][tiley].end2){
         }
         else{
             return false;
         }
     }
     // tile above
-    if(tiles.[tilex ][tiley + 1] == placed){
+    if(tiles[tilex ][tiley + 1].placed == true){
         connectcount++;
-        if(tiles.[tilex ][tiley + 1].end1 == tiles.[tilex][tiley] == end1){
-            break;
+        if(tiles[tilex ][tiley + 1].end1 == tiles[tilex][tiley].end1){
+
         }
-        else if(tiles.[tilex ][tiley + 1].end1 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex ][tiley + 1].end1 == tiles[tilex][tiley].end2){
         }
-        else if(tiles.[tilex ][tiley + 1].end2 == tiles.[tilex][tiley] == end1){
-            break;
+        else if(tiles[tilex ][tiley + 1].end2 == tiles[tilex][tiley].end1){
+
         }
-        else if(tiles.[tilex ][tiley + 1].end2 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex ][tiley + 1].end2 == tiles[tilex][tiley].end2){
         }
         else{
             return false;
         }
     }
     //tile below
-    if(tiles.[tilex ][tiley-1] == placed){
+    if(tiles[tilex ][tiley-1].placed == true){
         connectcount++;
-        if(tiles.[tilex ][tiley-1].end1 == tiles.[tilex][tiley] == end1){
-            break;
+        if(tiles[tilex ][tiley-1].end1 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex ][tiley-1].end1 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex ][tiley-1].end1 == tiles[tilex][tiley].end2){
         }
-        else if(tiles.[tilex ][tiley-1].end2 == tiles.[tilex][tiley] == end1){
-            break;
+        else if(tiles[tilex ][tiley-1].end2 == tiles[tilex][tiley].end1){
         }
-        else if(tiles.[tilex ][tiley-1].end2 == tiles.[tilex][tiley] == end2){
-            break;
+        else if(tiles[tilex ][tiley-1].end2 == tiles[tilex][tiley].end2){
         }
         else{
             return false;
@@ -263,7 +235,7 @@ bool placement(vector< vector<Tiles> >& tiles,Vector2f click,Texture & texture,i
         return false;
     }
     else{
-        tiles.[tilex][tiley].retexture(s,r,texture);
+        tiles[tilex][tiley].retexture(s,r,texture);
         return true;
     }
 

@@ -1,7 +1,10 @@
 #ifndef TILES_H_INCLUDED
 #define TILES_H_INCLUDED
+#include <stdlib.h>
 #include <SFML/Graphics.hpp>
 
+using namespace std;
+using namespace sf;
 class Tiles{
 public:
     bool placed;
@@ -10,6 +13,7 @@ public:
     int end1;
     int end2;
     //left = 0, right = 1, up = 2, down = 3
+
     Sprite sprite;
 
     Tiles(Texture & texture,int,int,bool);
@@ -24,7 +28,7 @@ Tiles::Tiles(Texture & texture,int s,int r,bool p){
     placed = p;
     side = s;
     rotation = r;
-    sprite.setTexture(Texture);
+    sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
 }
 void Tiles::ends(){
@@ -55,7 +59,7 @@ void Tiles::ends(){
     }
 }
 void Tiles::retexture(int s,int r,Texture & texture){
-    sprite.setTexture(Texture);
+    sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
 }
 int Tiles::getEnd1(){
