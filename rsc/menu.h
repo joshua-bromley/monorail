@@ -75,10 +75,7 @@ Sprite getSprite::MenuOption(){
 
 class Button::MenuOption{
 public:
-    bool isClicked(Vector2f);
-
-
-};
+    bool isClicked(Vector2f)
 
 class Dragable::MenuOption{
 public:
