@@ -9,33 +9,63 @@ bool pathfinder(vector< vector<Tiles> >& tiles, int, int, int);
 bool placement(vector< vector<Tiles> >& tiles,Vector2f,Texture &,int);
 
 int main(){
-    RenderWindow window(VideoMode(1000,1000), "Monorail");
+    RenderWindow window(VideoMode(900,1000), "Monorail");
     window.setFramerateLimit(60);
     bool turn = true;
     bool playAgain = true;
+    int rotation = 0;
+    int side = 0;
+    int tilesPlaced = 0;
     Texture texture;
     texture.loadFromFile("sprites.png");
-    vector< vector<Tiles> > tiles;
+    vector< vector<Tiles> > tiles;/
     for(int i = 0; i < 13; i++){
         vector<Tiles> row;
         for(int j = 0; j < 14; j++){
             if(i == 6 && (j == 6 || j == 7)){
-                Tiles tiles(texture, 0, 1, true);
+                Tiles tiles(texture, 0, 1, 2);
                 row.push_back(tiles);
             }
             else{
-                Tiles tiles(texture, 0, 3, false);
+                Tiles tiles(texture, 0, 3, 1);
                 row.push_back(tiles);
             }
         }
 
     }
+    Sprite endTurnButton;
+    Sprite impossibleButton;
+    Sprite stagingButton;
+    stagingButton.setTexture(texture);
+    stagingButton.setTextureRect(IntRect(0,0,64,64));
+    stagingButton.setPosition(10,900);
+    Mouse mouse;
     while(playAgain && window.isOpen()){
         Event event;
         while(window.pollEvent(event)){
             if(event.type == Event::Closed){
                 window.close();
             }
+            if(event.type == Event::MouseButtonPressed(mouse.Left) && stagingButton.getGlobalBounds().contains(mouse.getPosition())){
+                rotation++;
+                rotation = rotation%4;
+            }
+            if(event.type == Event::MouseButtonPressed(mouse.Right) && stagingButton.getGlobalBounds().contains(mouse.getPosition())){
+                side++;
+                side = side%2;
+            }
+            if(event.type == Event::MouseButtonPressed(mouse.Right) && mouse.getPosition().x/64 < 13 && mouse.getPosition().y/64 < 14 && counter < 3){
+                tiles[mouse.getPosition().x/64][mouse.getPosition().y/64].retexture(side, rotation, texture);
+                counter++;
+                side = 0;
+                rotation = 0;
+            }
+            if(event.type == Event::MouseButtonPressed(mouse.Right) && endTurnButton.getGlobalBounds().contains(mouse.getPosition())){
+                turn = !turn;
+                counter = 0;
+                //Insert pathfinding code here
+            }
+
         }
 
 
