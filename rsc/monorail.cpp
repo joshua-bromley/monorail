@@ -2,7 +2,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "tiles.h"
-
+// Created by Sierra Loiselle and Joshua Bromley
 using namespace std;
 using namespace sf;
 bool pathfinder(vector< vector<Tiles> >& tiles, int, int, int);
@@ -37,6 +37,7 @@ int main(){
                 window.close();
             }
         }
+
 
 
     }
