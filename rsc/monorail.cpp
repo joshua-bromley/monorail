@@ -15,10 +15,11 @@ int main(){
     bool playAgain = true;
     int rotation = 0;
     int side = 0;
+    int counter = 0;
     int tilesPlaced = 0;
     Texture texture;
     texture.loadFromFile("sprites.png");
-    vector< vector<Tiles> > tiles;/
+    vector< vector<Tiles> > tiles;
     for(int i = 0; i < 13; i++){
         vector<Tiles> row;
         for(int j = 0; j < 14; j++){
@@ -41,35 +42,46 @@ int main(){
     stagingButton.setPosition(10,900);
     Mouse mouse;
     while(playAgain && window.isOpen()){
+
         Event event;
         while(window.pollEvent(event)){
             if(event.type == Event::Closed){
                 window.close();
             }
-            if(event.type == Event::MouseButtonPressed(mouse.Left) && stagingButton.getGlobalBounds().contains(mouse.getPosition())){
+
+            if(event.type == Mouse::isButtonPressed(mouse.Left) && stagingButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y) == true){
                 rotation++;
                 rotation = rotation%4;
             }
-            if(event.type == Event::MouseButtonPressed(mouse.Right) && stagingButton.getGlobalBounds().contains(mouse.getPosition())){
+            if(event.type == Mouse::isButtonPressed(mouse.Right) && stagingButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y) == true){
                 side++;
                 side = side%2;
             }
-            if(event.type == Event::MouseButtonPressed(mouse.Right) && mouse.getPosition().x/64 < 13 && mouse.getPosition().y/64 < 14 && counter < 3){
+            if(event.type == Mouse::isButtonPressed(mouse.Right) && mouse.getPosition().x/64 < 13 && mouse.getPosition().y/64 < 14 && counter < 3){
                 tiles[mouse.getPosition().x/64][mouse.getPosition().y/64].retexture(side, rotation, texture);
                 counter++;
                 side = 0;
                 rotation = 0;
             }
-            if(event.type == Event::MouseButtonPressed(mouse.Right) && endTurnButton.getGlobalBounds().contains(mouse.getPosition())){
+            if(event.type == Mouse::isButtonPressed(mouse.Right) && endTurnButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y) == true){
                 turn = !turn;
                 counter = 0;
                 //Insert pathfinding code here
             }
 
         }
+        for(int x = 0;x<tiles.size();x++){
+            for(int y = 0;y<tiles[x].size();y++){
+                 window.draw(tiles[x][y].sprite);
+            }
+        }
+        window.draw(endTurnButton);
+        window.draw(impossibleButton);
+        window.draw(stagingButton);
 
 
     }
+
     return 0;
 }
 
