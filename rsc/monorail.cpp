@@ -24,15 +24,17 @@ int main(){
         vector<Tiles> row;
         for(int j = 0; j < 14; j++){
             if(i == 6 && (j == 6 || j == 7)){
-                Tiles tiles(texture, 0, 1, 2);
-                row.push_back(tiles);
+                Tiles tiles1(texture, 0, 1, 2);
+                tiles1.sprite.setPosition(Vector2f(64*j,64*i));
+                row.push_back(tiles1);
             }
             else{
-                Tiles tiles(texture, 0, 3, 1);
-                row.push_back(tiles);
+                Tiles tiles2(texture, 0, 3, 1);
+                tiles2.sprite.setPosition(Vector2f(64*j,64*i));
+                row.push_back(tiles2);
             }
         }
-
+        tiles.push_back(row);
     }
     Sprite endTurnButton;
     Sprite impossibleButton;
@@ -70,7 +72,9 @@ int main(){
             }
 
         }
+        window.clear();
         for(int x = 0;x<tiles.size();x++){
+                cout << "." <<endl;
             for(int y = 0;y<tiles[x].size();y++){
                  window.draw(tiles[x][y].sprite);
             }
@@ -78,6 +82,7 @@ int main(){
         window.draw(endTurnButton);
         window.draw(impossibleButton);
         window.draw(stagingButton);
+        window.display();
 
 
 
