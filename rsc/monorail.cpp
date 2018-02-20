@@ -13,6 +13,7 @@ int main(){
     window.setFramerateLimit(60);
     bool turn = true;
     bool playAgain = true;
+    bool leftbuttondown = false, rightbuttondown = false;
     int rotation = 0;
     int side = 0;
     int counter = 0;
@@ -50,31 +51,50 @@ int main(){
             if(event.type == Event::Closed){
                 window.close();
             }
-
-            if(event.type == Mouse::isButtonPressed(mouse.Left) && stagingButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y) == true){
-                rotation++;
-                rotation = rotation%4;
+            if (event.type == Event::MouseButtonReleased){
+                if(event.mouseButton.button == Mouse::Left){
+                    leftbuttondown = false;
+                }
+                else if(event.mouseButton.button == Mouse::Right){
+                    rightbuttondown = false;
+                }
             }
-            if(event.type == Mouse::isButtonPressed(mouse.Right) && stagingButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y) == true){
+        }
+        if(Mouse::isButtonPressed(Mouse::Left) && leftbuttondown == false){
+            leftbuttondown = true;
+            if(stagingButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y)){
+                if(side == 0){
+                    if(rotation == 0){
+                        rotation = 2;
+                    }
+                    else {
+                        rotation = 0;
+                    }
+                }
+                if(side == 1){
+                    rotation ++;
+                    rotation = rotation%4;
+                }
+                stagingButton.setTextureRect(IntRect(rotation*64,side*64,64,64));
+            }
+            else if(mouse.getPosition(window).y < 832 && mouse.getPosition(window).x < 896){
+                tiles[mouse.getPosition(window).x/64][mouse.getPosition(window).y/64].retexture(side,rotation);
+                cout << "A" << endl;
+                rotation = 0;
+                side = 0;
+            }
+        }
+        if(Mouse::isButtonPressed(Mouse::Right) && rightbuttondown == false){
+            rightbuttondown = true;
+            if(stagingButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y)){
                 side++;
                 side = side%2;
-            }
-            if(event.type == Mouse::isButtonPressed(mouse.Right) && mouse.getPosition().x/64 < 13 && mouse.getPosition().y/64 < 14 && counter < 3){
-                tiles[mouse.getPosition().x/64][mouse.getPosition().y/64].retexture(side, rotation, texture);
-                counter++;
-                side = 0;
                 rotation = 0;
+                stagingButton.setTextureRect(IntRect(rotation*64,side*64,64,64));
             }
-            if(event.type == Mouse::isButtonPressed(mouse.Right) && endTurnButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y) == true){
-                turn = !turn;
-                counter = 0;
-                //Insert pathfinding code here
-            }
-
         }
         window.clear();
         for(int x = 0;x<tiles.size();x++){
-                cout << "." <<endl;
             for(int y = 0;y<tiles[x].size();y++){
                  window.draw(tiles[x][y].sprite);
             }
@@ -283,7 +303,7 @@ bool placement(vector< vector<Tiles> >& tiles,Vector2f click,Texture & texture,i
         return false;
     }
     else{
-        tiles[tilex][tiley].retexture(s,r,texture);
+        tiles[tilex][tiley].retexture(s,r);
         return true;
     }
 

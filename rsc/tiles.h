@@ -18,7 +18,7 @@ public:
 
     Tiles(Texture & texture,int,int,bool);
     void ends();
-    void retexture(int,int,Texture& texture);
+    void retexture(int,int);
 };
 Tiles::Tiles(Texture & texture,int s,int r,bool p){
     placed = p;
@@ -54,9 +54,9 @@ void Tiles::ends(){
         }
     }
 }
-void Tiles::retexture(int s,int r,Texture & texture){
-    sprite.setTexture(texture);
-    sprite.setTextureRect(IntRect(rotation*64,side*128,64,64));
+void Tiles::retexture(int s,int r){
+    sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
+    cout << s << " " << r << endl;
 }
 
 
