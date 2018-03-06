@@ -6,7 +6,7 @@
 using namespace std;
 using namespace sf;
 bool pathfinder(vector< vector<Tiles> >& tiles, int, int, int);
-bool placement(vector< vector<Tiles> >& tiles,Vector2f,Texture &,int);
+bool placement(vector< vector<Tiles> >& tiles,Vector2i);
 
 int main(){
     RenderWindow window(VideoMode(900,1000), "Monorail");
@@ -77,11 +77,12 @@ int main(){
                 }
                 stagingButton.setTextureRect(IntRect(rotation*64,side*64,64,64));
             }
-            else if(mouse.getPosition(window).y < 832 && mouse.getPosition(window).x < 896){
-                tiles[mouse.getPosition(window).x/64][mouse.getPosition(window).y/64].retexture(side,rotation);
-                cout << "A" << endl;
+            else if(mouse.getPosition(window).y < 832 && mouse.getPosition(window).x < 896 && tilesPlaced < 16 && placement(tiles,mouse.getPosition())){
+                tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].retexture(side,rotation);
                 rotation = 0;
                 side = 0;
+                tilesPlaced++;
+                stagingButton.setTextureRect(IntRect(rotation*64,side*64,64,64));
             }
         }
         if(Mouse::isButtonPressed(Mouse::Right) && rightbuttondown == false){
@@ -149,7 +150,7 @@ bool pathfinder(vector< vector<Tiles> >& tiles, int x, int y, int last){
       }
 
 }
-bool placement(vector< vector<Tiles> >& tiles,Vector2f click,Texture & texture,int turn,int s,int r){
+bool placement(vector< vector<Tiles> >& tiles,Vector2i click){
     //turn = # turn this is
     int tilex;
     int tiley;
@@ -303,7 +304,6 @@ bool placement(vector< vector<Tiles> >& tiles,Vector2f click,Texture & texture,i
         return false;
     }
     else{
-        tiles[tilex][tiley].retexture(s,r);
         return true;
     }
 

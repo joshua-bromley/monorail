@@ -55,8 +55,10 @@ void Tiles::ends(){
     }
 }
 void Tiles::retexture(int s,int r){
+    rotation = r;
+    side = s;
     sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
-    cout << s << " " << r << endl;
+
 }
 
 
