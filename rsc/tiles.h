@@ -8,6 +8,7 @@ using namespace sf;
 class Tiles{
 public:
     bool placed;
+    bool newlyPlaced;
     int side;
     int rotation;
     int end1;
@@ -20,15 +21,16 @@ public:
     void ends();
     void retexture(int,int);
 };
-Tiles::Tiles(Texture & texture,int s,int r,bool p){
+Tiles::Tiles(Texture & texture,int s = 0,int r = 0,bool p = 0){
     placed = p;
+    newlyPlaced = false;
     side = s;
     rotation = r;
     sprite.setTexture(texture);
-    sprite.setTextureRect(IntRect(rotation*64,side*128,64,64));
+    sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
 }
 void Tiles::ends(){
-    sprite.setTextureRect(IntRect(rotation*64,side*128,64,64));
+    sprite.setTextureRect(IntRect(rotation*64,side*64,64,64));
     if(side == 0){
         if(rotation <= 1){
             end1 = 0;
