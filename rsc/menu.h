@@ -60,7 +60,7 @@ Vector2f getTexturePosition::MenuOption(){
     return texturePosition;
 }
 
-Vector2f getTextureSize:;MenuOption(){
+Vector2f getTextureSize::MenuOption(){
     return textureSize;
 }
 
@@ -75,11 +75,29 @@ Sprite getSprite::MenuOption(){
 
 class Button::MenuOption{
 public:
+<<<<<<< HEAD
     bool isClicked(Vector2f)
+=======
+    bool isClicked(Vector2f);
+};
+>>>>>>> 99b68186e33f25520d1a92ec95a269f7659a118b
+
+bool isClicked::Button(Vector2f mousePosition){
+    if(sprite.getGlobalBounds().contains(mousePosition)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 
 class Dragable::MenuOption{
 public:
     void dragged(Vector2f);
 };
+
+void dragged::Dragable(Vector2f mousePosition){
+    sprite.setPosition(mousePosition);
+}
 
 #endif // MENU_H_INCLUDED
