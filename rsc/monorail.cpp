@@ -73,7 +73,9 @@ int main(){
         }
         if(Mouse::isButtonPressed(Mouse::Left) && leftbuttondown == false){
             leftbuttondown = true;
-            if(stagingButton.sprite.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y)){
+            int mouseX = mouse.getPosition(window).x;
+            int mouseY = mouse.getPosition(window).y;
+            if(stagingButton.sprite.getGlobalBounds().contains(mouseX,mouseY)){
                 if(side == 0){
                     if(rotation == 0){
                         rotation = 2;
@@ -88,7 +90,7 @@ int main(){
                 }
                 stagingButton.retexture(side,rotation);
             }
-            else if(endTurnButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y)){
+            else if(endTurnButton.getGlobalBounds().contains(mouseX,mouseY)){
                 placedThisTurn = 0;
                 if(!impossible){
                     turn = !turn;
@@ -109,7 +111,7 @@ int main(){
                 }
                 stagingButton.retexture(side,rotation);
             }
-            else if(impossibleButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y)){
+            else if(impossibleButton.getGlobalBounds().contains(mouseX,mouseY)){
                 if(!impossible){
                     impossible = true;
                     if(turn){
@@ -129,13 +131,13 @@ int main(){
 
                 }
             }
-            else if(mouse.getPosition(window).y > 0 && mouse.getPosition(window).x > 0 && mouse.getPosition(window).y < 832 && mouse.getPosition(window).x < 896){
+            else if(mouseY > 0 && mouseX > 0 && mouseY < 832 && mouseX < 896){
                 if(tilesPlaced < 16){
                     if((placedThisTurn < 3 && placement(tiles,mouse.getPosition(window),placedThisTurn,stagingButton))||impossible){
-                        tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].retexture(side,rotation);
-                        tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].newlyPlaced = true;
-                        tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].placed = true;
-                        tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].ends();
+                        tiles[(mouseY/64)][(mouseX/64)].retexture(side,rotation);
+                        tiles[(mouseY/64)][(mouseX/64)].newlyPlaced = true;
+                        tiles[(mouseY/64)][(mouseX/64)].placed = true;
+                        tiles[(mouseY/64)][(mouseX/64)].ends();
                         rotation = 0;
                         side = 0;
                         tilesPlaced++;
@@ -147,17 +149,19 @@ int main(){
         }
         if(Mouse::isButtonPressed(Mouse::Right) && rightbuttondown == false){
             rightbuttondown = true;
-            if(stagingButton.sprite.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y)){
+            int mouseX = mouse.getPosition(window).x;
+            int mouseY = mouse.getPosition(window).y;
+            if(stagingButton.sprite.getGlobalBounds().contains(mouseX,mouseY)){
                 side++;
                 side = side%2;
                 rotation = 0;
                 stagingButton.retexture(side,rotation);
             }
-            else if(mouse.getPosition(window).y > 0 && mouse.getPosition(window).x > 0 && mouse.getPosition(window).y < 832 && mouse.getPosition(window).x < 896){
-                if(tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].newlyPlaced == true){
-                    tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].retexture(0,3);
-                    tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].newlyPlaced = false;
-                    tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].placed = false;
+            else if(mouseY > 0 && mouseX > 0 && mouseY < 832 && mouseX < 896){
+                if(tiles[(mouseY/64)][(mouseX/64)].newlyPlaced == true){
+                    tiles[(mouseY/64)][(mouseX/64)].retexture(0,3);
+                    tiles[(mouseY/64)][(mouseX/64)].newlyPlaced = false;
+                    tiles[(mouseY/64)][(mouseX/64)].placed = false;
                     tilesPlaced--;
                     placedThisTurn--;
                 }
