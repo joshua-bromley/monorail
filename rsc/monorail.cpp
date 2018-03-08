@@ -14,6 +14,7 @@ int main(){
     bool turn = true;
     bool playAgain = true;
     bool leftbuttondown = false, rightbuttondown = false;
+    bool impossible = false;
     int rotation = 0;
     int side = 0;
     int counter = 0;
@@ -53,6 +54,7 @@ int main(){
     Tiles stagingButton(texture);
     stagingButton.sprite.setPosition(10,900);
     Mouse mouse;
+    cout << "Player 1s turn" << endl;
     while(playAgain && window.isOpen()){
 
         Event event;
@@ -88,7 +90,9 @@ int main(){
             }
             else if(endTurnButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y)){
                 placedThisTurn = 0;
-                turn = !turn;
+                if(!impossible){
+                    turn = !turn;
+                }
                 for(int i = 0; i < 13; i++){
                     for(int j = 0; j < 14; j++){
                         tiles[i][j].newlyPlaced = false;
@@ -105,16 +109,40 @@ int main(){
                 }
                 stagingButton.retexture(side,rotation);
             }
-            else if(mouse.getPosition(window).y > 0 && mouse.getPosition(window).x > 0 && mouse.getPosition(window).y < 832 && mouse.getPosition(window).x < 896 && tilesPlaced < 16 && placedThisTurn < 3 && placement(tiles,mouse.getPosition(window),placedThisTurn,stagingButton)){
-                tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].retexture(side,rotation);
-                tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].newlyPlaced = true;
-                tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].placed = true;
-                tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].ends();
-                rotation = 0;
-                side = 0;
-                tilesPlaced++;
-                placedThisTurn++;
-                stagingButton.retexture(side,rotation);
+            else if(impossibleButton.getGlobalBounds().contains(mouse.getPosition(window).x,mouse.getPosition(window).y)){
+                if(!impossible){
+                    impossible = true;
+                    if(turn){
+                        cout << "Player 1 called impossible, Player 2 must finish the track" << endl;
+                    }
+                    else{
+                        cout << "Player 2 called impossible, Player 1 must finish the track" << endl;
+                    }
+                }
+                else{
+                    if(turn){
+                        cout << "Player 2 conceded, the track is impossible" << endl;
+                    }
+                    else{
+                        cout << "Player 1 conceded, the track is impossible" << endl;
+                    }
+
+                }
+            }
+            else if(mouse.getPosition(window).y > 0 && mouse.getPosition(window).x > 0 && mouse.getPosition(window).y < 832 && mouse.getPosition(window).x < 896){
+                if(tilesPlaced < 16){
+                    if((placedThisTurn < 3 && placement(tiles,mouse.getPosition(window),placedThisTurn,stagingButton))||impossible){
+                        tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].retexture(side,rotation);
+                        tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].newlyPlaced = true;
+                        tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].placed = true;
+                        tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].ends();
+                        rotation = 0;
+                        side = 0;
+                        tilesPlaced++;
+                        placedThisTurn++;
+                        stagingButton.retexture(side,rotation);
+                    }
+                }
             }
         }
         if(Mouse::isButtonPressed(Mouse::Right) && rightbuttondown == false){
@@ -125,6 +153,16 @@ int main(){
                 rotation = 0;
                 stagingButton.retexture(side,rotation);
             }
+            else if(mouse.getPosition(window).y > 0 && mouse.getPosition(window).x > 0 && mouse.getPosition(window).y < 832 && mouse.getPosition(window).x < 896){
+                if(tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].newlyPlaced == true){
+                    tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].retexture(0,3);
+                    tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].newlyPlaced = false;
+                    tiles[(mouse.getPosition(window).y/64)][(mouse.getPosition(window).x/64)].placed = false;
+                    tilesPlaced--;
+                    placedThisTurn--;
+                }
+            }
+
         }
         window.clear();
         for(int x = 0;x<tiles.size();x++){
@@ -141,10 +179,10 @@ int main(){
 
     }
     if(turn){
-        cout << "Player 1 wins!" << endl;
+        cout << "Player 2 wins!" << endl;
     }
     else{
-        cout << "Player 2 wins!" << endl;
+        cout << "Player 1 wins!" << endl;
     }
 
     return 0;
