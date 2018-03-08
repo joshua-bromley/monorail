@@ -49,10 +49,11 @@ int main(){
     impossibleButton.setTexture(buttonTexture);
     endTurnButton.setTextureRect(IntRect(0,0,128,128));
     impossibleButton.setTextureRect(IntRect(128,0,128,128));
-    endTurnButton.setPosition(Vector2f(250,850));
+    endTurnButton.setPosition(Vector2f(384,850));
     impossibleButton.setPosition(Vector2f(750,850));
     Tiles stagingButton(texture);
-    stagingButton.sprite.setPosition(10,900);
+    stagingButton.sprite.setScale(2.0f,2.0f);
+    stagingButton.sprite.setPosition(10,850);
     Mouse mouse;
     cout << "Player 1s turn" << endl;
     while(playAgain && window.isOpen()){
