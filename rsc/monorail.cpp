@@ -5,14 +5,14 @@
 // Created by Sierra Loiselle and Joshua Bromley
 using namespace std;
 using namespace sf;
-bool pathfinder(vector< vector<Tiles> >& tiles, int, int, int);
+bool pathfinder(vector< vector<Tiles> >& tiles, int, int, int, int, int);
 bool placement(vector< vector<Tiles> >& tiles,Vector2i,int,Tiles);
 //y then x
 int main(){
     RenderWindow window(VideoMode(900,1000), "Monorail");
     window.setFramerateLimit(60);
+
     bool turn = true;
-    bool playAgain = true;
     bool leftbuttondown = false, rightbuttondown = false;
     bool impossible = false;
     int rotation = 0;
@@ -20,10 +20,15 @@ int main(){
     int counter = 0;
     int tilesPlaced = 0;
     int placedThisTurn = 0;
+
+    Texture textTexture;
     Texture texture;
     Texture buttonTexture;
-    texture.loadFromFile("sprites.png");
-    buttonTexture.loadFromFile("MonorailButtons.png");
+
+    texture.loadFromFile("tubesprite.png");
+    buttonTexture.loadFromFile("tubebuttons.png");
+    textTexture.loadFromFile("tubeplayers.png");
+
     vector< vector<Tiles> > tiles;
     for(int i = 0; i < 13; i++){
         vector<Tiles> row;
@@ -43,20 +48,39 @@ int main(){
         }
         tiles.push_back(row);
     }
+
     Sprite endTurnButton;
     Sprite impossibleButton;
+    Sprite turnMarkers [4];
+    Sprite turnLabels;
+    for(int i = 0; i < 4; i++){
+        turnMarkers[i].setTexture(texture);
+        turnMarkers[i].setTextureRect(IntRect(0,0,64,64));
+        turnMarkers[i].setScale(2.0f,2.0f);
+        turnMarkers[i].setPosition(516-128*i,860);
+    }
+    turnMarkers[3].setTextureRect(IntRect(0,64,64,64));
+
     endTurnButton.setTexture(buttonTexture);
     impossibleButton.setTexture(buttonTexture);
+    turnLabels.setTexture(textTexture);
+
     endTurnButton.setTextureRect(IntRect(0,0,128,128));
     impossibleButton.setTextureRect(IntRect(128,0,128,128));
-    endTurnButton.setPosition(Vector2f(384,850));
-    impossibleButton.setPosition(Vector2f(750,850));
+    turnLabels.setTextureRect(IntRect(0,0,256,64));
+
+    endTurnButton.setPosition(Vector2f(644,850));
+    impossibleButton.setPosition(Vector2f(772,850));
+    turnLabels.setPosition(Vector2f(258,835));
+
     Tiles stagingButton(texture);
     stagingButton.sprite.setScale(2.0f,2.0f);
-    stagingButton.sprite.setPosition(10,850);
+    stagingButton.sprite.setPosition(10,860);
     Mouse mouse;
+
     cout << "Player 1s turn" << endl;
-    while(playAgain && window.isOpen()){
+
+    while(window.isOpen()){
 
         Event event;
         while(window.pollEvent(event)){
@@ -101,7 +125,13 @@ int main(){
                         tiles[i][j].newlyPlaced = false;
                     }
                 }
-                if(pathfinder(tiles,7,6,0)){
+                if(pathfinder(tiles,7,6,0,tilesPlaced,-2)){
+                    if(turn){
+                        cout << "Player 2 wins!" << endl;
+                    }
+                    else{
+                        cout << "Player 1 wins!" << endl;
+                    }
                     break;
                 }
                 if(turn){
@@ -114,21 +144,25 @@ int main(){
             }
             else if(impossibleButton.getGlobalBounds().contains(mouseX,mouseY)){
                 if(!impossible){
-                    impossible = true;
-                    if(turn){
-                        cout << "Player 1 called impossible, Player 2 must finish the track" << endl;
-                    }
-                    else{
-                        cout << "Player 2 called impossible, Player 1 must finish the track" << endl;
+                    if(placedThisTurn == 0){
+                        impossible = true;
+                        turn = !turn;
+                        if(turn){
+                            cout << "Player 2 called impossible, Player 1 must finish the track" << endl;
+                        }
+                        else{
+                            cout << "Player 1 called impossible, Player 2 must finish the track" << endl;
+                        }
                     }
                 }
                 else{
                     if(turn){
-                        cout << "Player 2 conceded, the track is impossible" << endl;
-                    }
-                    else{
                         cout << "Player 1 conceded, the track is impossible" << endl;
                     }
+                    else{
+                        cout << "Player 2 conceded, the track is impossible" << endl;
+                    }
+                    break;
 
                 }
             }
@@ -169,12 +203,24 @@ int main(){
             }
 
         }
-        window.clear();
+        if(turn){
+            turnMarkers[1].setTextureRect(IntRect(0,0,64,64));
+            turnMarkers[2].setTextureRect(IntRect(64,0,64,64));
+        }
+        else{
+            turnMarkers[1].setTextureRect(IntRect(64,0,64,64));
+            turnMarkers[2].setTextureRect(IntRect(0,0,64,64));
+        }
+        window.clear(Color(255,255,255));
         for(int x = 0;x<tiles.size();x++){
             for(int y = 0;y<tiles[x].size();y++){
                  window.draw(tiles[x][y].sprite);
             }
         }
+        for(int i = 0; i < 4; i++){
+            window.draw(turnMarkers[i]);
+        }
+        window.draw(turnLabels);
         window.draw(endTurnButton);
         window.draw(impossibleButton);
         window.draw(stagingButton.sprite);
@@ -183,52 +229,53 @@ int main(){
 
 
     }
-    if(turn){
-        cout << "Player 2 wins!" << endl;
-    }
-    else{
-        cout << "Player 1 wins!" << endl;
-    }
+
 
     return 0;
 }
 
-bool pathfinder(vector< vector<Tiles> >& tiles, int x, int y, int last){
+bool pathfinder(vector< vector<Tiles> >& tiles, int x, int y, int last, int tilesPlaced, int tilesPassed){
+    tilesPassed ++;
     if(tiles[y][x].placed == false){
         return false;
     }
     else if (x == 6 && y == 6){
-        return true;
+            if(tilesPassed >= tilesPlaced){
+                return true;
+            }
+            else{
+                return false;
+            }
     }
-      else if(tiles[y][x].end1 == last){
+    else if(tiles[y][x].end1 == last){
         switch(tiles[y][x].end2){
         case 0:
-            return pathfinder(tiles, x-1 ,y , 1);//go left
+            return pathfinder(tiles, x-1 ,y , 1, tilesPlaced, tilesPassed);//go left
             break;
         case 1:
-            return pathfinder(tiles, x+1, y, 0);//go right
+            return pathfinder(tiles, x+1, y, 0,tilesPlaced, tilesPassed);//go right
             break;
         case 2:
-            return pathfinder(tiles, x, y-1, 3);//go down
+            return pathfinder(tiles, x, y-1, 3, tilesPlaced, tilesPassed);//go down
             break;
         case 3:
-            return pathfinder(tiles, x, y+1, 2);//go up
+            return pathfinder(tiles, x, y+1, 2,  tilesPlaced, tilesPassed);//go up
             break;
         }
       }
       else{
         switch(tiles[y][x].end1){
         case 0:
-            return pathfinder(tiles, x-1 ,y , 1);//go left
+            return pathfinder(tiles, x-1 ,y , 1, tilesPlaced, tilesPassed);//go left
             break;
         case 1:
-            return pathfinder(tiles, x+1, y, 0);//go right
+            return pathfinder(tiles, x+1, y, 0, tilesPlaced, tilesPassed);//go right
             break;
         case 2:
-            return pathfinder(tiles, x, y-1, 3);//go down
+            return pathfinder(tiles, x, y-1, 3, tilesPlaced, tilesPassed);//go down
             break;
         case 3:
-            return pathfinder(tiles, x, y+1, 2);//go up
+            return pathfinder(tiles, x, y+1, 2, tilesPlaced, tilesPassed);//go up
             break;
         }
       }
