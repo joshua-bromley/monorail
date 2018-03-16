@@ -71,7 +71,7 @@ int main(){
 
     endTurnButton.setPosition(Vector2f(644,850));
     impossibleButton.setPosition(Vector2f(772,850));
-    turnLabels.setPosition(Vector2f(258,835));
+    turnLabels.setPosition(Vector2f(277,835));
 
     Tiles stagingButton(texture);
     stagingButton.sprite.setScale(2.0f,2.0f);
@@ -115,7 +115,7 @@ int main(){
                 }
                 stagingButton.retexture(side,rotation);
             }
-            else if(endTurnButton.getGlobalBounds().contains(mouseX,mouseY)){
+            else if(endTurnButton.getGlobalBounds().contains(mouseX,mouseY) && placedThisTurn > 0){
                 placedThisTurn = 0;
                 if(!impossible){
                     turn = !turn;
@@ -142,7 +142,7 @@ int main(){
                 }
                 stagingButton.retexture(side,rotation);
             }
-            else if(impossibleButton.getGlobalBounds().contains(mouseX,mouseY)){
+            else if(impossibleButton.getGlobalBounds().contains(mouseX,mouseY) && placedThisTurn == 0){
                 if(!impossible){
                     if(placedThisTurn == 0){
                         impossible = true;
@@ -167,8 +167,9 @@ int main(){
                 }
             }
             else if(mouseY > 0 && mouseX > 0 && mouseY < 832 && mouseX < 896){
-                if(tilesPlaced < 16){
-                    if((placedThisTurn < 3 && placement(tiles,mouse.getPosition(window),placedThisTurn,stagingButton))||impossible){
+                cout << tilesPlaced << endl;
+                if(tilesPlaced <= 16){
+                    if((placedThisTurn < 3 && placement(tiles,mouse.getPosition(window),placedThisTurn,stagingButton))||(impossible && placement(tiles,mouse.getPosition(window),0,stagingButton))){
                         tiles[(mouseY/64)][(mouseX/64)].retexture(side,rotation);
                         tiles[(mouseY/64)][(mouseX/64)].newlyPlaced = true;
                         tiles[(mouseY/64)][(mouseX/64)].placed = true;
