@@ -26,8 +26,8 @@ int main(){
     Texture buttonTexture;
 
     texture.loadFromFile("tubesprite.png");
-    buttonTexture.loadFromFile("tubebuttons.png");
-    textTexture.loadFromFile("tubeplayers.png");
+    //buttonTexture.loadFromFile("tubebuttons.png");
+    //textTexture.loadFromFile("tubeplayers.png");
 
     vector< vector<Tiles> > tiles;
     for(int i = 0; i < 13; i++){
