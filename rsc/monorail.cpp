@@ -25,9 +25,9 @@ int main(){
     Texture texture;
     Texture buttonTexture;
 
-    texture.loadFromFile("tubesprite.png");
-    //buttonTexture.loadFromFile("tubebuttons.png");
-    //textTexture.loadFromFile("tubeplayers.png");
+    texture.loadFromFile("tubesprite2.png");
+    buttonTexture.loadFromFile("tubebuttons.png");
+    textTexture.loadFromFile("tubeplayers.png");
 
     vector< vector<Tiles> > tiles;
     for(int i = 0; i < 13; i++){
@@ -69,8 +69,8 @@ int main(){
     impossibleButton.setTextureRect(IntRect(128,0,128,128));
     turnLabels.setTextureRect(IntRect(0,0,256,64));
 
-    endTurnButton.setPosition(Vector2f(644,850));
-    impossibleButton.setPosition(Vector2f(772,850));
+    endTurnButton.setPosition(Vector2f(644,852));
+    impossibleButton.setPosition(Vector2f(772,852));
     turnLabels.setPosition(Vector2f(277,835));
 
     Tiles stagingButton(texture);
