@@ -36,6 +36,7 @@ int main(){
             if(i == 6 && (j == 6 || j == 7)){
                 Tiles tiles1(texture, 0, 1, true);
                 tiles1.sprite.setPosition(Vector2f(64*j,64*i));
+                tiles1.sprite.setScale(0.5f,0.5f);
                 tiles1.ends();
                 tiles1.placed = true;
                 row.push_back(tiles1);
@@ -43,6 +44,7 @@ int main(){
             else{
                 Tiles tiles2(texture, 0, 3, false);
                 tiles2.sprite.setPosition(Vector2f(64*j,64*i));
+                tiles2.sprite.setScale(0.5f,0.5f);
                 row.push_back(tiles2);
             }
         }
@@ -55,11 +57,10 @@ int main(){
     Sprite turnLabels;
     for(int i = 0; i < 4; i++){
         turnMarkers[i].setTexture(texture);
-        turnMarkers[i].setTextureRect(IntRect(0,0,64,64));
-        turnMarkers[i].setScale(2.0f,2.0f);
+        turnMarkers[i].setTextureRect(IntRect(0,0,128,128));
         turnMarkers[i].setPosition(516-128*i,860);
     }
-    turnMarkers[3].setTextureRect(IntRect(0,64,64,64));
+    turnMarkers[3].setTextureRect(IntRect(0,128,128,128));
 
     endTurnButton.setTexture(buttonTexture);
     impossibleButton.setTexture(buttonTexture);
@@ -74,7 +75,6 @@ int main(){
     turnLabels.setPosition(Vector2f(277,835));
 
     Tiles stagingButton(texture);
-    stagingButton.sprite.setScale(2.0f,2.0f);
     stagingButton.sprite.setPosition(10,860);
     Mouse mouse;
 
@@ -205,12 +205,12 @@ int main(){
 
         }
         if(turn){
-            turnMarkers[1].setTextureRect(IntRect(0,0,64,64));
-            turnMarkers[2].setTextureRect(IntRect(64,0,64,64));
+            turnMarkers[1].setTextureRect(IntRect(0,0,128,128));
+            turnMarkers[2].setTextureRect(IntRect(128,0,128,128));
         }
         else{
-            turnMarkers[1].setTextureRect(IntRect(64,0,64,64));
-            turnMarkers[2].setTextureRect(IntRect(0,0,64,64));
+            turnMarkers[1].setTextureRect(IntRect(128,0,128,128));
+            turnMarkers[2].setTextureRect(IntRect(0,0,128,128));
         }
         window.clear(Color(255,255,255));
         for(int x = 0;x<tiles.size();x++){
